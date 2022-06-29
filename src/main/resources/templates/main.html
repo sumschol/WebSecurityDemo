@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <script type="text/javascript">
+        function test() {
+            var str=document.getElementById("text").value;
+            // document.getElementById("t").innerHTML="<a href='"+str+"'>testlink</a>";
+            document.getElementById("t").innerHTML=str;
+        }
+
+        function judge(){
+            var file=document.getElementById("checkfile").value;
+            if (file==null||file==""){
+                alert("请选择要上传的文件");
+                // location.reload(true);
+                return false;
+            }
+            var isnext=false;
+            var filetypes=[".jpg",".png",".jpeg"];
+            var fileend=file.substring(file.lastIndexOf("."));
+            for (var i=0;i<filetypes.length;i++){
+                if (filetypes[i]==fileend){
+                    isnext=true;
+                    break;
+                }
+            }
+            if (!isnext){
+                document.getElementById("filemsg_js").innerHTML="文件类型不允许";
+                // location.reload(true);
+                return false;
+            }else {
+                return true;
+            }
+        }
+    </script>
+</head>
+<body>
+<h2><a th:text="'Welcome, '+${session.admin.userName}" ></a></h2>
+<hr>
+<h4>上传头像</h4>
+<form th:action="@{/fileupload}" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td><input type="file" name="photo"></td>
+            <td><input type="submit" value="上传"></td>
+        </tr>
+    </table>
+</form>
+<a th:text="${filemsg}"/>
+<br>
+<hr>
+<h4>上传头像(过滤)</h4>
+<form th:action="@{/fileuploadsec}" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td><input type="file" name="photo"></td>
+            <td><input type="button" value="上传" onclick="judge()"></td>
+        </tr>
+    </table>
+</form>
+<div id="filemsg_js"></div>
+<a th:text="${filemsgsec}"/>
+<br>
+<hr>
+
+<h4>评论</h4>
+<input type="text" id="text" value="">
+<input type="button" id="s" value="提交" onclick="test()">
+<div id="t"></div>
+<br>
+<HR>
+<h4>评论(xss防御)</h4>
+<form th:action="@{/xssdemo}" method="post">
+    <input type="text" name="xsstext" placeholder="请输入评论">
+    <input type="submit" value="提交">
+</form>
+<br>
+<!--<th:block th:text="${comment}"></th:block>-->
+<a th:text="${comment}"/>
+<br>
+<HR>
+<h4>用户查询</h4>
+<form th:action="@{/sql/sqldemo}" method="post">
+    <input type="text" name="sqlid" placeholder="请输入id">
+    <input type="hidden" name="token" value="123123123">
+    <input type="submit" value="查询"><br>
+</form>
+<!--<table align="center" bgcolor="#f5f5f5" border="1px">-->
+<!--    <tr>-->
+<!--        <th>id</th>-->
+<!--        <th>username</th>-->
+<!--        <th></th>-->
+<!--    </tr>-->
+<!--</table>-->
+<!--<a th:if="${user.id} != null" th:text="'id:'+${user.id}"/>-->
+id:<a th:if="${user?.id}!=null" th:text="${user?.id}"/><br>
+username:<a th:if="${user?.userName}!=null" th:text="${user?.userName}"/>
+<!--<a th:if="${user.userName} != null" th:text="'username:'+${user.userName}"/>-->
+<HR>
+<h4>用户查询(SQL注入防御)</h4>
+<form th:action="@{/sql/sqlsec}" method="post">
+    <input type="text" name="sqlsecid" placeholder="请输入id">
+    <input type="submit" value="查询"><br>
+</form>
+id:<a th:if="${user2?.id}" th:text="${user2?.id}"/><br>
+username:<a th:if="${user2?.userName}" th:text="${user2?.userName}"/>
+<HR>
+<h4>CSRF</h4>
+<a th:href="@{/token}"><button>点赞</button></a>
+<a th:if="${doLikeUserName}!=null" th:text="'点赞成功 (username：'+${doLikeUserName}+')'"/>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>webSecurity</title>
+</head>
+<body>
+<h3>Login:</h3>
+<form th:action="@{/login}" method="post">
+    <table border="0px" id="table">
+        <tr>
+            <td class="td1">用户名：</td>
+            <td><input type="text" value="" placeholder="Username" class="td2" name="name"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><span id="nameerr"></span></td>
+        </tr>
+        <tr>
+            <td class="td1">密码：</td>
+            <td><input type="text" value="" placeholder="Password" class="td2" name="pwd"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><span id="pwderr"></span></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="登录" class="td3">
+                <a th:href="@{/registerpage}"><input type="button" value="注册" class="td3"></a>
+            </td>
+        </tr>
+    </table>
+    <a th:text="${loginFailMsg}"/>
+</form>
+</body>
+</html>

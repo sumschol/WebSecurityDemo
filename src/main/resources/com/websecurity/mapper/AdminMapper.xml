@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.websecurity.mapper.AdminMapper">
+    <select id="getUserByUsername" resultType="com.websecurity.pojo.User">
+        select id, user_name userName, pass_word passWord from user where user_name = #{userName}
+    </select>
+
+    <insert id="insertUser" parameterType="com.websecurity.pojo.User">
+    insert into User(user_name,pass_word)
+    values(#{userName}, #{passWord})
+    </insert>
+
+<!--    List<User> getUserById(Integer id);-->
+    <select id="getUserById" resultType="java.lang.Integer">
+        select id, user_name userName from user where id = #{id}
+    </select>
+
+<!--    List<User> getAllUser();-->
+    <select id="getAllUser" resultType="com.websecurity.pojo.User">
+        select id, user_name userName, pass_word passWord from user
+    </select>
+
+</mapper>
